@@ -131,7 +131,7 @@ NSString* const DEFAULT_SOUND = @"res://platform_default";
     if ([path hasPrefix:@"res:"])
         return [self soundNameForResource:path];
 
-    return NULL;
+    return path;
 }
 
 /**
