@@ -128,7 +128,7 @@
         file = [self soundNameForResource:path];
     } else {
         [self createFile:path];
-        file = [fileUrl pathComponents].lastObject;
+        file = [path pathComponents].lastObject;
 
     }
 
