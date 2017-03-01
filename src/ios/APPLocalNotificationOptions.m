@@ -126,6 +126,10 @@
     } else
     if ([path hasPrefix:@"res:"]) {
         file = [self soundNameForResource:path];
+    } else {
+        [self createFile:path];
+        file = [fileUrl pathComponents].lastObject];
+
     }
 
     return [UNNotificationSound soundNamed:file];
@@ -278,4 +282,30 @@
     return (!str.length);
 }
 
+/** create the sound file in the Library/Sounds directory **/
+- (BOOL) createFile:(NSString*)fileUrl
+{
+     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+
+     NSString* pathCreate = [[paths objectAtIndex:0] stringByAppendingString:@"/Sounds"];
+
+     NSString* pathCopy = [[pathCreate stringByAppendingString:@"/"] stringByAppendingString:[fileUrl pathComponents].lastObject];
+
+     NSError *errorw1;
+     NSError *errorw2;
+
+     bool createDirectory = [[NSFileManager defaultManager] createDirectoryAtPath:pathCreate withIntermediateDirectories:YES attributes:nil error:&errorw1];
+
+     bool existFile = [[NSFileManager defaultManager] fileExistsAtPath:pathCopy];
+
+     if (existFile) {
+       [[NSFileManager defaultManager] removeItemAtPath:pathCopy error:&errorw1];
+     }
+　　 
+     bool success = [[NSFileManager defaultManager] copyItemAtPath:fileUrl toPath:pathCopy error:&errorw2];
+
+     return success;
+}
+
 @end
+
