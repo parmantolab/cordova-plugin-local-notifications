@@ -107,6 +107,9 @@ public class Options {
         if (every.equals("week")) {
             interval = AlarmManager.INTERVAL_DAY * 7;
         } else
+        if (every.equals("biweek")) {
+            interval = AlarmManager.INTERVAL_DAY * 14;
+        } else
         if (every.equals("month")) {
             interval = AlarmManager.INTERVAL_DAY * 31;
         } else
