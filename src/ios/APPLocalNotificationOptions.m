@@ -203,7 +203,8 @@
     NSCalendar* cal = [[NSCalendar alloc]
                        initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 
-    NSDateComponents *date = [self getDate];
+    NSDateComponents *date = [cal components:[self repeatInterval]
+                                    fromDate:[self fireDate]];
 
     [date setTimeZone:[NSTimeZone defaultTimeZone]];
 
