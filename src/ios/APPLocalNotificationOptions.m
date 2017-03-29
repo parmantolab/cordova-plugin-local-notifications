@@ -203,7 +203,8 @@
     NSCalendar* cal = [[NSCalendar alloc]
                        initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 
-    NSDateComponents *date = [self getDate];
+    NSDateComponents *date = [cal components:[self repeatInterval]
+                                    fromDate:[self fireDate]];
 
     [date setTimeZone:[NSTimeZone defaultTimeZone]];
 
@@ -217,56 +218,6 @@
 - (double) timeInterval
 {
     return MAX(0.01f, [self.fireDate timeIntervalSinceDate:[NSDate date]]);
-}
-
-/**
- * Modified by Tong.
-Rewrite the get fire date function
- */
-
-- (NSDateComponents) getDate
-{
-    NSDate *fireDate;
-    NSString* interval = [dict objectForKey:@"every"];
-    double timestamp = [[dict objectForKey:@"at"]
-                        doubleValue];
-
-    if ([self stringIsNullOrEmpty:interval]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:0];
-    }
-    else if ([interval isEqualToString:@"second"]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:1];
-    }
-    else if ([interval isEqualToString:@"minute"]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:60];
-    }
-    else if ([interval isEqualToString:@"hour"]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:(60*60)];
-    }
-    else if ([interval isEqualToString:@"day"]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:(60*60*24)];
-    }
-    else if ([interval isEqualToString:@"week"]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:(60*60*24*7)];
-    }
-    else if ([interval isEqualToString:@"biweek"]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:(60*60*24*14)];
-    }
-    else if ([interval isEqualToString:@"month"]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:(60*60*24*31)];
-    }
-    else if ([interval isEqualToString:@"year"]) {
-        fireDate = [[NSDate dateWithTimeIntervalSince1970:timestamp] dateByAddingTimeInterval:(60*60*24*365)];
-    }
-
-    NSCalendar *gregorian = [[NSCalendar alloc]
-                         initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *returnDateComponents =
-                    [gregorian components:(NSDayCalendarUnit | 
-                                           NSWeekdayCalendarUnit) fromDate:fireDate];
-
-    return returnDateComponents;
-
 }
 
 
